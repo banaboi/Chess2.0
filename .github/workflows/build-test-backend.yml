@@ -58,3 +58,15 @@ jobs:
       run: |
         cd backend/chess_engine
         cargo test
+
+  clippy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Run Clippy
+      run: |
+        cd backend
+        cargo clippy
