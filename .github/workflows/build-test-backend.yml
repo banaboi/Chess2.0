@@ -17,11 +17,20 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
+    - name: Cache Cargo Dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cargo
+          backend/target
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-
+
     - name: Build Backend
       run: |
         cd backend
         cargo build --release
-
     - name: Archive Build Artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -34,6 +43,16 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
+
+    - name: Cache Cargo Dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cargo
+          backend/chess_engine/target
+        key: ${{ runner.os }}-cargo-${{ hashFiles('backend/chess_engine/**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-
 
     - name: Run Rust Tests
       run: |
