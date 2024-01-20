@@ -1,0 +1,9 @@
+[package]
+name = "server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chess_engine = { path = "../chess_engine" }
+actix-web="4"
+webbrowser = "0.8.12"

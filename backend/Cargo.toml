@@ -1,0 +1,8 @@
+[workspace]
+
+members = [
+    "server",
+    "chess_engine",
+]
+
+# You can also specify other common dependencies or settings here.
