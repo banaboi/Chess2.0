@@ -58,3 +58,25 @@ jobs:
       run: |
         cd backend/chess_engine
         cargo test
+
+  clippy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Cache Cargo Dependencies
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.cargo
+          backend/chess_engine/target
+        key: ${{ runner.os }}-cargo-${{ hashFiles('backend/chess_engine/**/Cargo.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-cargo-
+
+    - name: Run Clippy
+      run: |
+        cd backend
+        cargo clippy
