@@ -1,9 +1,8 @@
-// chess_engine/src/moves.rs
-pub struct Move {
-    // Your move representation
+// chess_engine/src/move.rs
+pub struct Moves {
 }
 
-pub fn generate_legal_moves() -> Vec<Move> {
+pub fn generate_legal_moves() -> Vec<Moves> {
     // Your move generation logic
     vec![]
 }

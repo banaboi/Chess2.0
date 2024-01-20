@@ -6,6 +6,8 @@
 
 pub mod board;
 pub mod moves;
+pub mod piece;
+pub mod evaluator;
 
 // Example function
 pub fn your_chess_engine_function() -> String {
