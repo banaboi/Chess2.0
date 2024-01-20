@@ -1,4 +1,4 @@
-// chess_engine/src/move.rs
+// chess_engine/src/moves.rs
 pub struct Moves {
 }
 

@@ -1,13 +1,13 @@
-use crate::piece::{Piece, Colour, PieceType};
+use crate::piece::{Colour, Piece, PieceType};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Square {
-    pub piece: Option<Piece>
+    pub piece: Option<Piece>,
 }
 
 impl Square {
     pub fn new() -> Self {
-        Square { piece: None}
+        Square { piece: None }
     }
     pub fn place_piece(&mut self, colour: Colour, piece_type: PieceType) {
         self.piece = Some(Piece::new(colour, piece_type));
@@ -23,7 +23,7 @@ impl Square {
 }
 
 pub struct Board {
-    squares: Vec<Square>
+    squares: Vec<Square>,
 }
 
 impl Board {
@@ -38,4 +38,3 @@ pub fn board_function() -> String {
     // Access and print a square for demonstration
     chess_board.squares[0].display()
 }
-

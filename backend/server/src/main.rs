@@ -1,8 +1,16 @@
-use actix_web::{web, App, HttpServer, HttpResponse};
-use webbrowser;
-use chess_engine::your_chess_engine_function;  // Import the necessary function(s)
+use actix_web::{web, App, HttpResponse, HttpServer};
+use chess_engine::board::Board;
+use chess_engine::evaluator::Evaluator;
+use chess_engine::move_validator::MoveValidator;
 
-async fn index() -> HttpResponse {
+struct AppState {
+    board: Board,
+    evaluator: Evaluator,
+    move_validator: MoveValidator,
+}
+
+async fn index(data: web::Data<AppState>) -> HttpResponse {
+    let mut board = &data.board;
     HttpResponse::Ok().body("Hello, world!")
 }
 
@@ -11,26 +19,23 @@ async fn hello() -> HttpResponse {
     HttpResponse::Ok().body("Hello!")
 }
 
-// Handler for calling chess function endpoint
-async fn chess_function() -> HttpResponse {
-    let result: String = your_chess_engine_function();
-    HttpResponse::Ok().body(result)
-}
-
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let server = HttpServer::new(|| {
+    let app_state = web::Data::new(AppState {
+        board: Board::new(),
+        evaluator: Evaluator::new(),
+        move_validator: MoveValidator::new(),
+    });
+
+    let server = HttpServer::new(move || {
         App::new()
+            .app_data(app_state.clone())
             .service(web::resource("/").to(index))
-            .service(web::resource("/chess").to(chess_function))
             .service(web::resource("/hello").to(hello))
     })
     .bind("127.0.0.1:8080")?;
 
     println!("Starting server on http://127.0.0.1:8080");
-
-    // Open the default web browser
     webbrowser::open("http://127.0.0.1:8080").expect("Failed to open web browser.");
-
     server.run().await
 }
