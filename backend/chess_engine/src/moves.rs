@@ -1,5 +1,4 @@
 // chess_engine/src/moves.rs
-
 pub struct Move {
     // Your move representation
 }

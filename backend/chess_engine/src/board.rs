@@ -1,5 +1,4 @@
-// chess_engine/src/board.rs
-
-pub struct ChessBoard {
-    // Your chess board implementation
+pub fn board_function() -> String {
+    "board_function".to_string()
 }
+
