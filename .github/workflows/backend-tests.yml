@@ -1,0 +1,26 @@
+name: backend-tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Rust
+      uses: actions/setup-rust@v2
+
+    - name: Run Rust Tests
+      run: |
+        cd backend/chess_engine
+        cargo test
