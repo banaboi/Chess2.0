@@ -2,6 +2,8 @@ use actix_web::{web, App, HttpResponse, HttpServer};
 use chess_engine::board::Board;
 use chess_engine::evaluator::Evaluator;
 use chess_engine::move_validator::MoveValidator;
+use chess_engine::piece::{Colour, PieceType};
+use std::sync::Mutex;
 
 struct AppState {
     board: Board,
@@ -9,30 +11,22 @@ struct AppState {
     move_validator: MoveValidator,
 }
 
-async fn index(data: web::Data<AppState>) -> HttpResponse {
-    let board = &data.board;
-    let result = board.get_value_at_square(0, 0);
-
-    let print_result: String;
-    if let Some(piece) = result.piece {
-        print_result = format!(
-            "Colour of the piece is {} and its type is {}",
-            piece.get_colour(),
-            piece.get_piece_type()
-        );
-    } else {
-        print_result = String::from("There is no piece at this square");
-    }
-    HttpResponse::Ok().body(print_result)
+async fn index(data: web::Data<Mutex<AppState>>) -> HttpResponse {
+    let mut state = data.lock().unwrap();
+    state
+        .board
+        .place_piece(PieceType::Pawn, Colour::White, 0, 0);
+    let result = state.board.get_value_at_square(0, 0);
+    HttpResponse::Ok().body(result)
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let app_state = web::Data::new(AppState {
+    let app_state = web::Data::new(Mutex::new(AppState {
         board: Board::new(),
         evaluator: Evaluator::new(),
         move_validator: MoveValidator::new(),
-    });
+    }));
 
     let server = HttpServer::new(move || {
         App::new()
