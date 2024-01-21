@@ -6,3 +6,9 @@ impl MoveValidator {
         MoveValidator {}
     }
 }
+
+impl Default for MoveValidator {
+    fn default() -> Self {
+        Self::new()
+    }
+}
